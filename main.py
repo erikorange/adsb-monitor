@@ -9,6 +9,7 @@ adsbInvalid = 0
 def handler(signum, frame):
     print(f"Valid: {adsbValid}")
     print(f"Invalid: {adsbInvalid}")
+    l.stop()
     sys.exit()
 
 # Set the signal handler
@@ -20,20 +21,16 @@ l = Listener("adsb-monitor", 30003)
 l.start()
 
 while True:
-    try:
-        print("before getData")
+    if l.hasData():
         squitter = l.getData()
-        print("after getData")
         if adsb.isValidRec(squitter):
             adsbValid += 1
-            print(squitter)
+            print(f"{adsbValid}: {squitter}")
         else:
             adsbInvalid += 1
 
-
-    except:
+    else:
         pass
-
 
     
 
